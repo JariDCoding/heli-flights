@@ -1,0 +1,33 @@
+# Large / unused model variants
+r44.glb
+r44_hq.glb
+r44_v2.glb
+r44_v3.glb
+r44_web.glb
+
+# Blender source files
+*.blend
+*.blend1
+
+# After Effects / Illustrator
+*.aep
+*.ai
+
+# Video & renders
+*.mp4
+*.MP4
+*.png
+*.PNG
+*.pdf
+
+# Archives
+*.zip
+
+# Misc project files
+_bak/
+Heli\ cont/
+HeliFlight\ selectie/
+Adobe\ After\ Effects\ Auto-Save/
+Fills/
+*.aep~
+.DS_Store
