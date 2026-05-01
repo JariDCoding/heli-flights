@@ -450,6 +450,13 @@
     color: #07090d;
   }
 
+  @media (min-width: 1800px) {
+    .hero .wrap {
+      align-items: flex-start;
+      padding-top: clamp(8rem, 9vh, 12rem);
+    }
+  }
+
   /* Stagger-in animation */
   .fade-up {
     opacity: 0;
@@ -1711,8 +1718,18 @@
   const camera = new THREE.PerspectiveCamera(
     28, window.innerWidth / window.innerHeight, 0.1, 200
   );
-  camera.position.set(-1.4, 3.4, 19);
-  camera.lookAt(0.4, 0.6, 0);
+  function setCameraForViewport() {
+    const w = window.innerWidth;
+    if (w >= 1800) {
+      camera.position.set(-1.4, 3.4, 14);
+    } else if (w >= 1440) {
+      camera.position.set(-1.4, 3.4, 16);
+    } else {
+      camera.position.set(-1.4, 3.4, 19);
+    }
+    camera.lookAt(0.4, 0.6, 0);
+  }
+  setCameraForViewport();
 
   // ── Renderer — maxed-out quality ──────────────────────────────────────
   const renderer = new THREE.WebGLRenderer({
@@ -2141,6 +2158,13 @@
 
   const EULER_ORDER = 'YXZ';
 
+  function getViewportYOffset() {
+    const w = window.innerWidth;
+    if (w >= 1800) return 1.5;
+    if (w >= 1440) return 0.8;
+    return 0;
+  }
+
   const target = {
     x:  2.4, y: 0.4, z: 0,
     rx: 0,   ry: 0,  rz: -0.06,
@@ -2184,7 +2208,7 @@
       const arc = Math.sin(ptTrans * Math.PI);
 
       target.x  = lerp(3.5, -3.2, ptTrans);              // RIGHT → LEFT
-      target.y  = lerp(0.4, -0.8, ptTrans) + arc * 1.0 - 0.6;
+      target.y  = lerp(0.4, -0.8, ptTrans) + arc * 1.0 - 0.6 + getViewportYOffset() * (1 - raw);
       target.z  = arc * 5.2;
       target.ry = ptTrans * Math.PI;                       // 0 → PI (nose ends left)
       target.rz = -0.04 - bankAmt * 0.14;                 // bank LEFT (into travel dir)
@@ -2475,6 +2499,7 @@
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
+    setCameraForViewport();
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   });
